@@ -580,8 +580,30 @@ function EndedView({
         Duree: {String(mins).padStart(2, "0")}:{String(secs).padStart(2, "0")}
       </p>
 
+      {/* AI Summary */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="w-full max-w-sm rounded-xl border border-violet-500/20 bg-violet-500/5 p-4 mb-4"
+      >
+        <div className="flex items-center gap-2 mb-2">
+          <Sparkle weight="fill" className="h-3.5 w-3.5 text-violet-400" />
+          <span className="text-xs font-semibold text-violet-400">Resume IA</span>
+        </div>
+        <p className="text-[11px] text-white/50 leading-relaxed">
+          Marie a applique les exercices de delegation avec succes : 3 taches deleguees, 2h/jour liberees.
+          Prochaine etape : travailler sur la priorisation strategique.
+        </p>
+      </motion.div>
+
       {/* Transcript preview */}
-      <div className="w-full max-w-sm rounded-xl border border-white/5 bg-white/3 p-4 mb-6">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="w-full max-w-sm rounded-xl border border-white/5 bg-white/3 p-4 mb-6"
+      >
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs font-medium text-white/50">Transcription</span>
           <span className="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-white/30">
@@ -599,7 +621,7 @@ function EndedView({
           <Download className="h-3 w-3" />
           Telecharger la transcription
         </button>
-      </div>
+      </motion.div>
 
       <button
         onClick={onBack}
