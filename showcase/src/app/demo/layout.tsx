@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Cube,
-  House,
   ChartLine,
   Calendar,
   ChatsCircle,
@@ -33,7 +32,7 @@ const navItems = [
   { href: "/demo/typeform", label: "Typeform", icon: ListChecks, color: "from-red-500 to-pink-500" },
   { href: "/demo/payments", label: "Payments", icon: CreditCard, color: "from-green-500 to-emerald-500" },
   { href: "/demo/onboarding", label: "Onboarding", icon: Rocket, color: "from-fuchsia-500 to-violet-500" },
-  { href: "/demo/appel", label: "Appel", icon: Phone, color: "from-violet-500 to-indigo-500" },
+  { href: "/demo/appel", label: "Appel", icon: Phone, color: "from-violet-500 to-indigo-500", isNew: true },
 ];
 
 export default function DemoLayout({
@@ -148,6 +147,11 @@ export default function DemoLayout({
                     <span className={cn("font-medium", isActive && "text-foreground")}>
                       {item.label}
                     </span>
+                    {"isNew" in item && item.isNew && (
+                      <span className="ml-auto text-[9px] font-bold uppercase tracking-wider bg-primary/20 text-primary px-1.5 py-0.5 rounded">
+                        new
+                      </span>
+                    )}
                   </div>
                 </Link>
               );
