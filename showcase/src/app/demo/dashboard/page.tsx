@@ -532,9 +532,17 @@ export default function DashboardDemo() {
               <h3 className="text-sm font-medium text-muted-foreground">
                 Acquisition
               </h3>
-              <p className="text-2xl font-bold text-foreground">
-                {totalClients}
-              </p>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={period}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  className="text-2xl font-bold text-foreground"
+                >
+                  {totalClients}
+                </motion.p>
+              </AnimatePresence>
             </div>
             <button className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-muted transition-colors">
               <DotsThreeVertical weight="bold" className="h-4 w-4 text-muted-foreground" />
@@ -602,11 +610,12 @@ export default function DashboardDemo() {
                         {item.source}
                       </span>
                       <span className="text-xs text-muted-foreground">
-                        {percentage}%
+                        {item.count} ({percentage}%)
                       </span>
                     </div>
                     <div className="mt-1 h-1 w-full rounded-full bg-muted overflow-hidden">
                       <motion.div
+                        key={`${item.source}-${period}`}
                         initial={{ width: 0 }}
                         animate={{ width: `${percentage}%` }}
                         transition={{ duration: 0.8, delay: 0.3 }}
