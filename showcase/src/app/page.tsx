@@ -117,6 +117,7 @@ const briques = [
     href: "/demo/appel",
     color: "from-violet-500 to-indigo-500",
     shadow: "shadow-violet-500/10",
+    isNew: true,
   },
 ];
 
@@ -556,8 +557,13 @@ export default function HomePage() {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-lg font-semibold text-foreground">
+                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
                     {brique.name}
+                    {"isNew" in brique && brique.isNew && (
+                      <span className="text-[9px] font-bold uppercase tracking-wider bg-primary/20 text-primary px-1.5 py-0.5 rounded animate-pulse">
+                        new
+                      </span>
+                    )}
                   </h3>
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                     {brique.description}
