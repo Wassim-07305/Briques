@@ -83,12 +83,32 @@ const statsByPeriod = {
   "12m": { revenue: 91000, clients: 245, completion: 87, rdv: 96, revChange: 42, clientChange: 35 },
 };
 
-const clientsData = [
-  { source: "Referral", count: 45, color: "#8b5cf6" },
-  { source: "LinkedIn", count: 32, color: "#06b6d4" },
-  { source: "Organique", count: 28, color: "#10b981" },
-  { source: "Social", count: 18, color: "#f59e0b" },
-];
+const clientsByPeriod = {
+  "7d": [
+    { source: "Referral", count: 6, color: "#8b5cf6" },
+    { source: "LinkedIn", count: 5, color: "#06b6d4" },
+    { source: "Organique", count: 4, color: "#10b981" },
+    { source: "Social", count: 3, color: "#f59e0b" },
+  ],
+  "30d": [
+    { source: "Referral", count: 22, color: "#8b5cf6" },
+    { source: "LinkedIn", count: 18, color: "#06b6d4" },
+    { source: "Organique", count: 16, color: "#10b981" },
+    { source: "Social", count: 11, color: "#f59e0b" },
+  ],
+  "90d": [
+    { source: "Referral", count: 45, color: "#8b5cf6" },
+    { source: "LinkedIn", count: 32, color: "#06b6d4" },
+    { source: "Organique", count: 28, color: "#10b981" },
+    { source: "Social", count: 18, color: "#f59e0b" },
+  ],
+  "12m": [
+    { source: "Referral", count: 98, color: "#8b5cf6" },
+    { source: "LinkedIn", count: 65, color: "#06b6d4" },
+    { source: "Organique", count: 52, color: "#10b981" },
+    { source: "Social", count: 30, color: "#f59e0b" },
+  ],
+};
 
 const weeklyData = [
   { day: "Lun", sessions: 12, completions: 8 },
@@ -272,6 +292,7 @@ export default function DashboardDemo() {
 
   const stats = statsByPeriod[period];
   const revenueData = revenueByPeriod[period];
+  const clientsData = clientsByPeriod[period];
   const totalClients = clientsData.reduce((sum, item) => sum + item.count, 0);
 
   const insightsByPeriod = {
