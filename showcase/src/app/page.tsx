@@ -22,6 +22,7 @@ import {
   Code,
   Shield,
   Sparkle,
+  Phone,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
@@ -108,6 +109,15 @@ const briques = [
     color: "from-fuchsia-500 to-violet-500",
     shadow: "shadow-fuchsia-500/10",
   },
+  {
+    id: "appel",
+    name: "Appel",
+    description: "Visioconference WebRTC avec transcription live et calendrier",
+    icon: Phone,
+    href: "/demo/appel",
+    color: "from-violet-500 to-indigo-500",
+    shadow: "shadow-violet-500/10",
+  },
 ];
 
 const features = [
@@ -150,10 +160,10 @@ const features = [
 ];
 
 const stats = [
-  { label: "Briques", value: 9, suffix: "" },
-  { label: "Composants", value: 50, suffix: "+" },
+  { label: "Briques", value: 10, suffix: "" },
+  { label: "Composants", value: 60, suffix: "+" },
   { label: "Types de questions", value: 9, suffix: "" },
-  { label: "Lignes de code", value: 12, suffix: "k+" },
+  { label: "Lignes de code", value: 15, suffix: "k+" },
 ];
 
 /* ─── Animated Counter ─── */
@@ -262,7 +272,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-sm font-medium text-primary mb-8"
             >
               <Sparkle weight="fill" className="h-4 w-4" />
-              9 Briques SaaS Pretes a l&apos;Emploi
+              10 Briques SaaS Pretes a l&apos;Emploi
             </motion.div>
 
             {/* Title */}

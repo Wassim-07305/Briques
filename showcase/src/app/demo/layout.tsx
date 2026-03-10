@@ -18,6 +18,7 @@ import {
   List,
   X,
   Sparkle,
+  Phone,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -32,6 +33,7 @@ const navItems = [
   { href: "/demo/typeform", label: "Typeform", icon: ListChecks, color: "from-red-500 to-pink-500" },
   { href: "/demo/payments", label: "Payments", icon: CreditCard, color: "from-green-500 to-emerald-500" },
   { href: "/demo/onboarding", label: "Onboarding", icon: Rocket, color: "from-fuchsia-500 to-violet-500" },
+  { href: "/demo/appel", label: "Appel", icon: Phone, color: "from-violet-500 to-indigo-500" },
 ];
 
 export default function DemoLayout({
@@ -158,7 +160,7 @@ export default function DemoLayout({
               <Sparkle weight="duotone" className="h-4 w-4 text-primary shrink-0" />
               <div>
                 <p className="text-[10px] font-medium text-foreground">
-                  9 briques pretes
+                  10 briques pretes
                 </p>
                 <p className="text-[10px] text-muted-foreground">
                   Next.js + Supabase
