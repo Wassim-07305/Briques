@@ -133,6 +133,13 @@ const initialMessages: Message[] = [
 
 const emojiOptions = ["❤️", "👍", "🔥", "⭐", "😊", "🎉"];
 
+const statusTexts = [
+  "En train d'ecrire un message...",
+  "En reunion — repond dans 1h",
+  "Disponible pour appel",
+  "En session de coaching",
+];
+
 const features = [
   "Messages temps reel via Supabase Realtime",
   "Channels publics et prives",
@@ -284,15 +291,18 @@ export default function MessagingDemo() {
 
               {/* Conversations List */}
               <div className="flex-1 overflow-y-auto p-2 space-y-1">
-                {conversations.map((conv) => (
-                  <button
+                {conversations.map((conv, index) => (
+                  <motion.button
                     key={conv.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
                     onClick={() => {
                       setActiveConv(conv);
                       setShowSidebar(false);
                     }}
                     className={cn(
-                      "w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all",
+                      "w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all relative",
                       activeConv.id === conv.id
                         ? "bg-primary/10"
                         : "hover:bg-muted/50"
@@ -340,7 +350,7 @@ export default function MessagingDemo() {
                         )}
                       </div>
                     </div>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -370,10 +380,16 @@ export default function MessagingDemo() {
                     <span className="font-semibold text-foreground">
                       {activeConv.name}
                     </span>
-                    <div className="flex items-center gap-1 text-xs text-emerald-500">
-                      <Circle weight="fill" className="h-2 w-2" />
-                      En ligne
-                    </div>
+                    {activeConv.online ? (
+                      <div className="flex items-center gap-1 text-xs text-emerald-500">
+                        <Circle weight="fill" className="h-2 w-2" />
+                        En ligne
+                      </div>
+                    ) : (
+                      <div className="text-xs text-muted-foreground">
+                        Vu recemment
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -391,6 +407,12 @@ export default function MessagingDemo() {
 
               {/* Messages */}
               <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+                {/* Date separator */}
+                <div className="flex items-center gap-3 py-2">
+                  <div className="flex-1 h-px bg-border" />
+                  <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Aujourd&apos;hui</span>
+                  <div className="flex-1 h-px bg-border" />
+                </div>
                 <AnimatePresence mode="popLayout">
                   {messages.map((msg) => (
                     <motion.div
@@ -620,22 +642,25 @@ export default function MessagingDemo() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-2xl border border-border bg-card p-6"
+          className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-6"
         >
           <h2 className="text-lg font-semibold text-foreground mb-4">
             Fonctionnalites
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {features.map((feature, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + index * 0.05 }}
+                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3 hover:bg-muted/50 transition-colors"
               >
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-pink-500/10">
                   <Check weight="bold" className="h-3 w-3 text-pink-500" />
                 </div>
                 <span className="text-sm text-foreground">{feature}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>

@@ -138,8 +138,10 @@ export default function IClosedDemo() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "" });
 
+  const today = new Date();
   const calendarDays = generateCalendarDays(currentYear, currentMonth);
   const timeSlots = selectedType ? generateTimeSlots(selectedType.duration) : [];
+  const isCurrentMonthView = currentMonth === today.getMonth() && currentYear === today.getFullYear();
 
   const monthNames = [
     "Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin",
@@ -367,14 +369,18 @@ export default function IClosedDemo() {
                             whileHover={day.available ? { scale: 1.1 } : {}}
                             whileTap={day.available ? { scale: 0.95 } : {}}
                             className={cn(
-                              "py-2 rounded-lg text-sm transition-all",
+                              "py-2 rounded-lg text-sm transition-all relative",
                               !day.isCurrentMonth && "text-muted-foreground/30",
                               day.isCurrentMonth && !day.available && "text-muted-foreground/50",
                               day.isCurrentMonth && day.available && "hover:bg-primary/10 cursor-pointer font-medium",
-                              selectedDate === day.day && day.isCurrentMonth && "bg-primary text-primary-foreground hover:bg-primary"
+                              selectedDate === day.day && day.isCurrentMonth && "bg-primary text-primary-foreground hover:bg-primary",
+                              isCurrentMonthView && day.isCurrentMonth && day.day === today.getDate() && selectedDate !== day.day && "ring-2 ring-primary/40 font-bold"
                             )}
                           >
                             {day.day}
+                            {isCurrentMonthView && day.isCurrentMonth && day.day === today.getDate() && (
+                              <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-primary" />
+                            )}
                           </motion.button>
                         ))}
                       </div>
@@ -514,7 +520,7 @@ export default function IClosedDemo() {
                     transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
                     className="mx-auto mb-6"
                   >
-                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/10 mx-auto">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/10 mx-auto ring-4 ring-emerald-500/20">
                       <CheckCircle weight="duotone" className="h-12 w-12 text-emerald-500" />
                     </div>
                   </motion.div>
@@ -554,22 +560,25 @@ export default function IClosedDemo() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-2xl border border-border bg-card p-6"
+          className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-6"
         >
           <h2 className="text-lg font-semibold text-foreground mb-4">
             Fonctionnalites
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {features.map((feature, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + index * 0.05 }}
+                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3 hover:bg-muted/50 transition-colors"
               >
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10">
                   <Check weight="bold" className="h-3 w-3 text-emerald-500" />
                 </div>
                 <span className="text-sm text-foreground">{feature}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>

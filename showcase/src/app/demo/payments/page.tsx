@@ -16,6 +16,9 @@ import {
   CalendarBlank,
   ArrowsClockwise,
   Warning,
+  Rocket,
+  Lightning,
+  Buildings,
 } from "@phosphor-icons/react";
 import { cn, formatCurrency } from "@/lib/utils";
 
@@ -26,6 +29,9 @@ interface Plan {
   yearlyPrice: number;
   features: string[];
   popular: boolean;
+  icon: React.ElementType;
+  color: string;
+  description: string;
 }
 
 const plans: Plan[] = [
@@ -36,6 +42,9 @@ const plans: Plan[] = [
     yearlyPrice: 290,
     features: ["5 clients actifs", "1 formation", "Support email", "Analytics de base"],
     popular: false,
+    icon: Rocket,
+    color: "from-blue-500 to-cyan-500",
+    description: "Ideal pour demarrer",
   },
   {
     id: "pro",
@@ -51,6 +60,9 @@ const plans: Plan[] = [
       "API access",
     ],
     popular: true,
+    icon: Lightning,
+    color: "from-violet-500 to-purple-500",
+    description: "Le plus populaire",
   },
   {
     id: "enterprise",
@@ -66,6 +78,9 @@ const plans: Plan[] = [
       "Formation equipe",
     ],
     popular: false,
+    icon: Buildings,
+    color: "from-amber-500 to-orange-500",
+    description: "Pour les equipes",
   },
 ];
 
@@ -212,7 +227,11 @@ export default function PaymentsDemo() {
               )}
 
               <div className="mb-4">
+                <div className={cn("flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br mb-3", plan.color)}>
+                  <plan.icon weight="duotone" className="h-5 w-5 text-white" />
+                </div>
                 <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
+                <p className="text-xs text-muted-foreground">{plan.description}</p>
               </div>
 
               <div className="mb-6">
@@ -487,22 +506,25 @@ export default function PaymentsDemo() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="rounded-2xl border border-border bg-card p-6"
+          className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-6"
         >
           <h2 className="text-lg font-semibold text-foreground mb-4">
             Fonctionnalites
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {features.map((feature, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + index * 0.05 }}
+                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3 hover:bg-muted/50 transition-colors"
               >
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10">
-                  <Check weight="bold" className="h-3 w-3 text-emerald-500" />
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-500/10">
+                  <Check weight="bold" className="h-3 w-3 text-green-500" />
                 </div>
                 <span className="text-sm text-foreground">{feature}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
