@@ -274,6 +274,14 @@ export default function DashboardDemo() {
   const revenueData = revenueByPeriod[period];
   const totalClients = clientsData.reduce((sum, item) => sum + item.count, 0);
 
+  const insightsByPeriod = {
+    "7d": `Vos revenus ont augmente de ${stats.revChange}% cette semaine. ${stats.clients} clients actifs — un pic le jeudi avec 2 100 € de CA.`,
+    "30d": `Vos revenus ont augmente de ${stats.revChange}% ce mois. 3 clients en essai pourraient convertir cette semaine — pensez a les relancer.`,
+    "90d": `Croissance de ${stats.revChange}% sur le trimestre avec ${stats.clients} clients actifs. Le referral reste votre meilleur canal d'acquisition.`,
+    "12m": `+${stats.revChange}% de revenus sur l'annee. Decembre est votre meilleur mois (12 300 €) — capitalisez sur cette saisonnalite.`,
+  };
+  const currentInsight = insightsByPeriod[period];
+
   const handleRefresh = () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1500);
@@ -872,11 +880,17 @@ export default function DashboardDemo() {
                 Insight IA
               </span>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Vos revenus ont augmente de {stats.revChange}% ce mois.
-              3 clients en essai pourraient convertir cette semaine — pensez a
-              les relancer.
-            </p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={period}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="text-xs text-muted-foreground leading-relaxed"
+              >
+                {currentInsight}
+              </motion.p>
+            </AnimatePresence>
           </div>
         </motion.div>
       </div>

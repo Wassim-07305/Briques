@@ -355,6 +355,7 @@ function ConnectedView({
   transcribing,
   showTranscript,
   callStartTime,
+  visibleTranscriptCount,
   onToggleMic,
   onToggleCamera,
   onToggleScreen,
@@ -369,6 +370,7 @@ function ConnectedView({
   transcribing: boolean;
   showTranscript: boolean;
   callStartTime: number;
+  visibleTranscriptCount: number;
   onToggleMic: () => void;
   onToggleCamera: () => void;
   onToggleScreen: () => void;
@@ -455,12 +457,11 @@ function ConnectedView({
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto p-3 space-y-3">
-                {mockTranscript.map((entry, i) => (
+                {mockTranscript.slice(0, visibleTranscriptCount).map((entry) => (
                   <motion.div
                     key={entry.id}
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
                   >
                     <div className="flex items-center gap-1 mb-0.5">
                       <span className="text-[10px] font-mono text-white/20">[{entry.time}]</span>
@@ -469,7 +470,7 @@ function ConnectedView({
                     <p className="text-xs text-white/70 leading-relaxed">{entry.text}</p>
                   </motion.div>
                 ))}
-                {transcribing && (
+                {transcribing && visibleTranscriptCount < mockTranscript.length && (
                   <div className="flex items-center gap-2">
                     <Waveform className="h-3.5 w-3.5 text-blue-400 animate-pulse" />
                     <span className="text-[10px] text-blue-400">Ecoute en cours...</span>
@@ -621,6 +622,18 @@ export default function AppelDemo() {
   const [showTranscript, setShowTranscript] = useState(false);
   const [callStartTime, setCallStartTime] = useState(0);
   const [callDuration, setCallDuration] = useState(0);
+  const [visibleTranscriptCount, setVisibleTranscriptCount] = useState(0);
+
+  // Progressive transcript reveal during call
+  useEffect(() => {
+    if (phase !== "connected" || !transcribing) return;
+    if (visibleTranscriptCount >= mockTranscript.length) return;
+
+    const timer = setTimeout(() => {
+      setVisibleTranscriptCount((c) => c + 1);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [phase, transcribing, visibleTranscriptCount]);
 
   const handleJoinCall = (call: ScheduledCall) => {
     setSelectedCall(call);
@@ -629,6 +642,7 @@ export default function AppelDemo() {
 
   const handleStartCall = () => {
     setPhase("connecting");
+    setVisibleTranscriptCount(0);
     setTimeout(() => {
       setPhase("connected");
       setCallStartTime(Date.now());
@@ -754,6 +768,7 @@ export default function AppelDemo() {
                     transcribing={transcribing}
                     showTranscript={showTranscript}
                     callStartTime={callStartTime}
+                    visibleTranscriptCount={visibleTranscriptCount}
                     onToggleMic={() => setMicOn(!micOn)}
                     onToggleCamera={() => setCameraOn(!cameraOn)}
                     onToggleScreen={() => setScreenSharing(!screenSharing)}
@@ -788,7 +803,7 @@ export default function AppelDemo() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-2xl border border-border bg-card p-6"
+          className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-6"
         >
           <h2 className="text-lg font-semibold text-foreground mb-4">
             Fonctionnalites
@@ -809,7 +824,7 @@ export default function AppelDemo() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 + index * 0.04 }}
-                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3"
+                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3 hover:bg-muted/50 transition-colors"
               >
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-500/10">
                   <Check weight="bold" className="h-3 w-3 text-violet-500" />

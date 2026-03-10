@@ -155,6 +155,8 @@ export default function IClosedDemo() {
   ];
 
   const handlePrevMonth = () => {
+    setSelectedDate(null);
+    setSelectedSlot(null);
     if (currentMonth === 0) {
       setCurrentMonth(11);
       setCurrentYear(currentYear - 1);
@@ -164,6 +166,8 @@ export default function IClosedDemo() {
   };
 
   const handleNextMonth = () => {
+    setSelectedDate(null);
+    setSelectedSlot(null);
     if (currentMonth === 11) {
       setCurrentMonth(0);
       setCurrentYear(currentYear + 1);
