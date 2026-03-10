@@ -302,7 +302,17 @@ export default function DashboardDemo() {
             </span>
           </div>
           <p className="text-sm text-muted-foreground mt-1">
-            Vue d&apos;ensemble de votre activite — Derniere MAJ il y a 2 min
+            Vue d&apos;ensemble de votre activite —{" "}
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={refreshing ? "refreshing" : "idle"}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                {refreshing ? "Mise a jour..." : "Derniere MAJ il y a 2 min"}
+              </motion.span>
+            </AnimatePresence>
           </p>
         </div>
 
