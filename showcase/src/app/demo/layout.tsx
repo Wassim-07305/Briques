@@ -188,7 +188,16 @@ export default function DemoLayout({
         </AnimatePresence>
 
         {/* Main content */}
-        <main className="flex-1 min-h-screen">{children}</main>
+        <main className="flex-1 min-h-screen">
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            {children}
+          </motion.div>
+        </main>
       </div>
     </div>
   );
