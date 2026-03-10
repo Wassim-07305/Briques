@@ -38,6 +38,8 @@ const suggestions = [
   "Quels sont les tarifs ?",
   "Comment prendre RDV ?",
   "Parle-moi de la methode",
+  "Quels resultats attendre ?",
+  "Combien de temps dure un accompagnement ?",
 ];
 
 const aiResponses: Record<string, { content: string; sources: string[] }> = {
@@ -60,6 +62,16 @@ const aiResponses: Record<string, { content: string; sources: string[] }> = {
     content:
       "Ma methode de coaching repose sur 3 piliers fondamentaux :\n\n1. **La clarification** : Definir precisement vos objectifs et identifier les obstacles\n2. **L'action** : Mettre en place des strategies concretes et mesurables\n3. **L'ancrage** : Integrer durablement les changements dans votre quotidien\n\nChaque session combine ecoute active, questionnement puissant et exercices pratiques.",
     sources: ["Methodologie", "Temoignages clients"],
+  },
+  "Quels resultats attendre ?": {
+    content:
+      "Les resultats varient selon votre engagement, mais voici ce que nos clients observent en moyenne :\n\n• **Apres 1 mois** : Meilleure clarte sur vos priorites\n• **Apres 3 mois** : +30% de productivite, delegation efficace\n• **Apres 6 mois** : Transformation durable des habitudes\n\n92% de nos clients atteignent leurs objectifs principaux dans les 6 premiers mois d'accompagnement.",
+    sources: ["Etude d'impact 2024", "Temoignages clients"],
+  },
+  "Combien de temps dure un accompagnement ?": {
+    content:
+      "La duree depend de vos objectifs :\n\n• **Sprint** (1 mois) : Ideal pour debloquer une situation precise\n• **Standard** (3 mois) : Pour un changement significatif et mesurable\n• **Transformation** (6 mois) : Pour une evolution profonde et durable\n\nJe recommande generalement 3 mois minimum pour observer des resultats concrets. Chaque parcours est ajuste en fonction de vos progres.",
+    sources: ["Guide d'accompagnement", "FAQ"],
   },
 };
 
@@ -265,22 +277,28 @@ export default function NameiaDemo() {
             {/* Chat Area */}
             <div className="lg:col-span-3 flex flex-col h-[500px]">
               {/* Header */}
-              <div className="flex items-center gap-3 border-b border-border px-4 py-3">
-                <button
-                  onClick={() => setShowDocs(true)}
-                  className="lg:hidden h-9 w-9 rounded-lg hover:bg-muted flex items-center justify-center"
-                >
-                  <BookOpen className="h-5 w-5" />
-                </button>
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
-                  <Robot weight="duotone" className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <span className="font-semibold text-foreground">Assistant IA</span>
-                  <div className="flex items-center gap-1 text-xs text-emerald-500">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                    En ligne
+              <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setShowDocs(true)}
+                    className="lg:hidden h-9 w-9 rounded-lg hover:bg-muted flex items-center justify-center"
+                  >
+                    <BookOpen className="h-5 w-5" />
+                  </button>
+                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                    <Robot weight="duotone" className="h-5 w-5 text-white" />
                   </div>
+                  <div>
+                    <span className="font-semibold text-foreground">Assistant IA</span>
+                    <div className="flex items-center gap-1 text-xs text-emerald-500">
+                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                      En ligne — RAG actif
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 text-[10px] text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-full">
+                  <Sparkle weight="fill" className="h-3 w-3" />
+                  Anthropic Claude
                 </div>
               </div>
 

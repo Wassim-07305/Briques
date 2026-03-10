@@ -177,12 +177,20 @@ export default function SkoolDemo() {
               {currentLesson ? (
                 <>
                   {/* Video area */}
-                  <div className="aspect-video relative bg-gradient-to-br from-indigo-500/20 via-violet-500/10 to-blue-500/20 flex items-center justify-center">
+                  <div className="aspect-video relative bg-gradient-to-br from-indigo-950 via-violet-950/80 to-blue-950 flex items-center justify-center overflow-hidden">
+                    {/* Animated background pattern */}
+                    <div className="absolute inset-0 opacity-30">
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(99,102,241,0.3),transparent_50%)]" />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(139,92,246,0.2),transparent_50%)]" />
+                    </div>
                     {/* Fake video content */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <GraduationCap className="h-16 w-16 text-white/20 mx-auto mb-4" />
-                        <p className="text-white/40 text-sm">{currentLesson.title}</p>
+                        <div className="h-20 w-20 mx-auto mb-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm">
+                          <GraduationCap className="h-10 w-10 text-indigo-400/60" />
+                        </div>
+                        <p className="text-white/50 text-sm font-medium">{currentLesson.title}</p>
+                        <p className="text-white/25 text-xs mt-1">{currentLesson.duration}</p>
                       </div>
                     </div>
 
