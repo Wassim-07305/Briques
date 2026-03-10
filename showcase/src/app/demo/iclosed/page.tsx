@@ -76,6 +76,12 @@ const features = [
 
 const daysOfWeek = ["L", "M", "M", "J", "V", "S", "D"];
 
+// Deterministic pseudo-random based on seed (avoids re-render flickering)
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed * 9301 + 49297) * 49297;
+  return x - Math.floor(x);
+}
+
 function generateCalendarDays(year: number, month: number) {
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
@@ -96,7 +102,7 @@ function generateCalendarDays(year: number, month: number) {
     const isPast = new Date(year, month, i) < new Date(new Date().setHours(0, 0, 0, 0));
     days.push({
       day: i,
-      available: !isWeekend && !isPast && Math.random() > 0.3,
+      available: !isWeekend && !isPast && seededRandom(year * 372 + month * 31 + i) > 0.3,
       isCurrentMonth: true,
     });
   }
@@ -110,7 +116,7 @@ function generateCalendarDays(year: number, month: number) {
   return days;
 }
 
-function generateTimeSlots(duration: number) {
+function generateTimeSlots(duration: number, day: number) {
   const slots = [];
   const startHour = 9;
   const endHour = 18;
@@ -118,7 +124,7 @@ function generateTimeSlots(duration: number) {
   for (let hour = startHour; hour < endHour; hour++) {
     for (let min = 0; min < 60; min += duration) {
       if (hour + min / 60 + duration / 60 <= endHour) {
-        const available = Math.random() > 0.4;
+        const available = seededRandom(day * 1440 + hour * 60 + min + duration) > 0.4;
         slots.push({
           time: `${hour.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")}`,
           available,
@@ -140,7 +146,7 @@ export default function IClosedDemo() {
 
   const today = new Date();
   const calendarDays = generateCalendarDays(currentYear, currentMonth);
-  const timeSlots = selectedType ? generateTimeSlots(selectedType.duration) : [];
+  const timeSlots = selectedType && selectedDate ? generateTimeSlots(selectedType.duration, selectedDate + currentMonth * 31) : [];
   const isCurrentMonthView = currentMonth === today.getMonth() && currentYear === today.getFullYear();
 
   const monthNames = [
