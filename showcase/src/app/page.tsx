@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, useMotionValue, useTransform, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   Cube,
@@ -351,28 +351,25 @@ export default function HomePage() {
       </section>
 
       {/* ─── Tech Stack Marquee ─── */}
-      <section className="border-t border-border bg-card/20 backdrop-blur-sm overflow-hidden py-6">
+      <section className="border-t border-border bg-card/20 backdrop-blur-sm overflow-hidden py-5">
         <div className="relative">
-          {/* Gradient fade left */}
           <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          {/* Gradient fade right */}
           <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-          <motion.div
-            animate={{ x: [0, -1200] }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            className="flex items-center gap-8 whitespace-nowrap"
-          >
-            {[
-              "Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "Supabase", "Framer Motion",
-              "Zustand", "TanStack Query", "Zod", "shadcn/ui", "Stripe", "WebRTC",
-              "Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "Supabase", "Framer Motion",
-              "Zustand", "TanStack Query", "Zod", "shadcn/ui", "Stripe", "WebRTC",
-            ].map((tech, i) => (
-              <span key={i} className="text-sm font-medium text-muted-foreground/60 tracking-wide">
-                {tech}
-              </span>
+          <div className="marquee whitespace-nowrap">
+            {[0, 1].map((set) => (
+              <div key={set} className="flex items-center gap-10 shrink-0 px-5">
+                {[
+                  "Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "Supabase", "Framer Motion",
+                  "Zustand", "TanStack Query", "Zod", "shadcn/ui", "Stripe", "WebRTC",
+                ].map((tech, i) => (
+                  <span key={i} className="text-sm font-medium text-muted-foreground/50 tracking-wide flex items-center gap-2">
+                    <span className="h-1 w-1 rounded-full bg-primary/40" />
+                    {tech}
+                  </span>
+                ))}
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -408,6 +405,69 @@ export default function HomePage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ─── Comment ca marche ─── */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="text-center mb-14">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-foreground sm:text-4xl"
+          >
+            Comment ca marche
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="mt-3 text-muted-foreground"
+          >
+            3 etapes pour lancer votre SaaS
+          </motion.p>
+        </div>
+        <div className="grid gap-8 sm:grid-cols-3">
+          {[
+            {
+              step: "01",
+              title: "Choisissez vos briques",
+              description: "Parcourez les 10 demos et selectionnez les composants dont vous avez besoin.",
+              color: "from-violet-500 to-purple-500",
+            },
+            {
+              step: "02",
+              title: "Copiez le code",
+              description: "Chaque brique est autonome — copy-paste dans votre projet Next.js existant.",
+              color: "from-fuchsia-500 to-pink-500",
+            },
+            {
+              step: "03",
+              title: "Deployez en production",
+              description: "Connectez Supabase, personnalisez le design et deployez sur Vercel.",
+              color: "from-amber-500 to-orange-500",
+            },
+          ].map((item, index) => (
+            <motion.div
+              key={item.step}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.15 }}
+              className="relative text-center"
+            >
+              <div className={cn("mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br text-white font-bold text-lg", item.color)}>
+                {item.step}
+              </div>
+              {index < 2 && (
+                <div className="hidden sm:block absolute top-7 left-[calc(50%+40px)] w-[calc(100%-80px)] h-px bg-gradient-to-r from-border via-primary/20 to-border" />
+              )}
+              <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">{item.description}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
@@ -567,17 +627,54 @@ export default function HomePage() {
 
       {/* ─── Footer ─── */}
       <footer className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <Cube weight="duotone" className="h-6 w-6 text-primary" />
-              <span className="font-semibold text-foreground">Briques</span>
-              <span className="text-xs text-muted-foreground ml-2">
-                par Wassim
-              </span>
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="grid gap-8 sm:grid-cols-3">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Cube weight="duotone" className="h-6 w-6 text-primary" />
+                <span className="font-semibold text-foreground">Briques</span>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Composants Next.js + Supabase prets a l&apos;emploi pour les coaches,
+                consultants et formateurs.
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Built with Next.js, Supabase & Tailwind CSS
+
+            {/* Demos */}
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-3">Demos</h4>
+              <div className="grid grid-cols-2 gap-1.5">
+                {briques.slice(0, 6).map((b) => (
+                  <Link key={b.id} href={b.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    {b.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Links */}
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-3">Liens</h4>
+              <div className="space-y-1.5">
+                <a href="https://github.com/Wassim-07305/Briques" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <GithubLogo className="h-4 w-4" />
+                  GitHub
+                </a>
+                <Link href="/demo/dashboard" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <ArrowRight className="h-4 w-4" />
+                  Explorer les demos
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2">
+            <p className="text-xs text-muted-foreground">
+              &copy; {new Date().getFullYear()} Wassim — Tous droits reserves
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Next.js + Supabase + Tailwind CSS
             </p>
           </div>
         </div>

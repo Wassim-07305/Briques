@@ -7,9 +7,24 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Briques Showcase — Composants Next.js + Supabase",
+  title: "Briques — Composants SaaS Next.js + Supabase",
   description:
-    "Demo des briques reutilisables pour coaches, consultants et formateurs.",
+    "10 briques reutilisables pour coaches, consultants et formateurs. Dashboard, Messaging, Payments, Onboarding et plus.",
+  metadataBase: new URL("https://briques-showcase.vercel.app"),
+  openGraph: {
+    title: "Briques — Composants SaaS Next.js + Supabase",
+    description:
+      "10 briques reutilisables pour coaches, consultants et formateurs.",
+    siteName: "Briques",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Briques — Composants SaaS Next.js + Supabase",
+    description:
+      "10 briques reutilisables pour coaches, consultants et formateurs.",
+  },
 };
 
 export default function RootLayout({

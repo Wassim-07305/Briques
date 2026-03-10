@@ -36,9 +36,18 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::selection {
+    background: oklch(0.65 0.25 285 / 0.3);
+    color: oklch(0.97 0.01 280);
   }
 
   /* Scrollbar styling */
@@ -125,5 +134,38 @@
     box-shadow:
       0 0 20px -5px oklch(0.65 0.25 285 / 0.15),
       0 0 60px -15px oklch(0.65 0.25 285 / 0.1);
+  }
+
+  /* Infinite marquee */
+  .marquee {
+    display: flex;
+    animation: marquee 40s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .marquee:hover {
+    animation-play-state: paused;
+  }
+
+  /* Pulse glow */
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px -5px oklch(0.65 0.25 285 / 0.2);
+    }
+    50% {
+      box-shadow: 0 0 40px -5px oklch(0.65 0.25 285 / 0.4);
+    }
   }
 }
