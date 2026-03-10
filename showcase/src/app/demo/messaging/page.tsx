@@ -87,58 +87,39 @@ const conversations: Conversation[] = [
   },
 ];
 
-const initialMessages: Message[] = [
-  {
-    id: "1",
-    content: "Bonjour ! Comment allez-vous aujourd'hui ?",
-    time: "10:15",
-    isOwn: true,
-    status: "read",
-  },
-  {
-    id: "2",
-    content: "Tres bien merci ! J'ai hate de commencer la session",
-    time: "10:18",
-    isOwn: false,
-  },
-  {
-    id: "3",
-    content: "Parfait ! On va travailler sur les objectifs qu'on avait definis la semaine derniere",
-    time: "10:20",
-    isOwn: true,
-    status: "read",
-  },
-  {
-    id: "4",
-    content: "Super session aujourd'hui !",
-    time: "10:23",
-    isOwn: false,
-    reactions: ["❤️", "🔥"],
-  },
-  {
-    id: "5",
-    content: "Merci ! On continue demain ?",
-    time: "10:25",
-    isOwn: true,
-    status: "read",
-  },
-  {
-    id: "6",
-    content: "Parfait, j'ai hate ! Voici mes notes de la session",
-    time: "10:26",
-    isOwn: false,
-    image: "notes",
-  },
-];
+const messagesByConversation: Record<string, Message[]> = {
+  "1": [
+    { id: "1-1", content: "Bonjour ! Comment allez-vous aujourd'hui ?", time: "10:15", isOwn: true, status: "read" },
+    { id: "1-2", content: "Tres bien merci ! J'ai hate de commencer la session", time: "10:18", isOwn: false },
+    { id: "1-3", content: "Parfait ! On va travailler sur les objectifs qu'on avait definis la semaine derniere", time: "10:20", isOwn: true, status: "read" },
+    { id: "1-4", content: "Super session aujourd'hui !", time: "10:23", isOwn: false, reactions: ["❤️", "🔥"] },
+    { id: "1-5", content: "Merci ! On continue demain ?", time: "10:25", isOwn: true, status: "read" },
+    { id: "1-6", content: "Parfait, j'ai hate ! Voici mes notes de la session", time: "10:26", isOwn: false, image: "notes" },
+  ],
+  "2": [
+    { id: "2-1", content: "Bonjour Jean ! Les exercices du module 4 sont prets", time: "09:10", isOwn: true, status: "read" },
+    { id: "2-2", content: "Super, je vais les regarder ce matin", time: "09:25", isOwn: false },
+    { id: "2-3", content: "N'hesitez pas si vous avez des questions", time: "09:30", isOwn: true, status: "read" },
+    { id: "2-4", content: "Merci pour les exercices", time: "09:45", isOwn: false },
+  ],
+  "3": [
+    { id: "3-1", content: "Sophie, voici le recap de notre derniere session", time: "14:00", isOwn: true, status: "read" },
+    { id: "3-2", content: "Merci beaucoup ! J'ai bien progresse sur les objectifs", time: "14:15", isOwn: false },
+    { id: "3-3", content: "A demain pour la seance !", time: "16:30", isOwn: false },
+  ],
+  "4": [
+    { id: "4-1", content: "Bonjour, j'ai termine le module 2", time: "11:00", isOwn: false },
+    { id: "4-2", content: "Excellent Pierre ! Le module 3 est maintenant accessible", time: "11:20", isOwn: true, status: "read" },
+    { id: "4-3", content: "J'ai une question sur le module 3", time: "15:00", isOwn: false },
+  ],
+  "5": [
+    { id: "5-1", content: "Bienvenue dans le groupe coaching ! 🎉", time: "Lun 09:00", isOwn: true, status: "read" },
+    { id: "5-2", content: "Merci ! Ravi de rejoindre le groupe", time: "Lun 09:15", isOwn: false },
+    { id: "5-3", content: "On se retrouve jeudi pour la session collective", time: "Lun 10:00", isOwn: true, status: "read" },
+  ],
+};
 
 const emojiOptions = ["❤️", "👍", "🔥", "⭐", "😊", "🎉"];
-
-const statusTexts = [
-  "En train d'ecrire un message...",
-  "En reunion — repond dans 1h",
-  "Disponible pour appel",
-  "En session de coaching",
-];
 
 const features = [
   "Messages temps reel via Supabase Realtime",
@@ -153,20 +134,30 @@ const features = [
 
 export default function MessagingDemo() {
   const [activeConv, setActiveConv] = useState(conversations[0]);
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [allMessages, setAllMessages] = useState<Record<string, Message[]>>(messagesByConversation);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState<string | null>(null);
   const [showSidebar, setShowSidebar] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const messages = allMessages[activeConv.id] || [];
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, activeConv.id]);
+
+  const updateConvMessages = (convId: string, updater: (prev: Message[]) => Message[]) => {
+    setAllMessages((prev) => ({
+      ...prev,
+      [convId]: updater(prev[convId] || []),
+    }));
+  };
 
   const handleSend = () => {
     if (!inputValue.trim()) return;
 
+    const convId = activeConv.id;
     const newMessage: Message = {
       id: Date.now().toString(),
       content: inputValue,
@@ -178,12 +169,12 @@ export default function MessagingDemo() {
       status: "sent",
     };
 
-    setMessages([...messages, newMessage]);
+    updateConvMessages(convId, (prev) => [...prev, newMessage]);
     setInputValue("");
 
     // Simulate delivery
     setTimeout(() => {
-      setMessages((prev) =>
+      updateConvMessages(convId, (prev) =>
         prev.map((m) =>
           m.id === newMessage.id ? { ...m, status: "delivered" } : m
         )
@@ -212,10 +203,10 @@ export default function MessagingDemo() {
         }),
         isOwn: false,
       };
-      setMessages((prev) => [...prev, response]);
+      updateConvMessages(convId, (prev) => [...prev, response]);
 
       // Mark own message as read
-      setMessages((prev) =>
+      updateConvMessages(convId, (prev) =>
         prev.map((m) =>
           m.id === newMessage.id ? { ...m, status: "read" } : m
         )
@@ -224,7 +215,7 @@ export default function MessagingDemo() {
   };
 
   const addReaction = (messageId: string, emoji: string) => {
-    setMessages((prev) =>
+    updateConvMessages(activeConv.id, (prev) =>
       prev.map((m) => {
         if (m.id === messageId) {
           const reactions = m.reactions || [];
