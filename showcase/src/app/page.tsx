@@ -271,7 +271,7 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
               className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-sm font-medium text-primary mb-8"
             >
-              <Sparkle weight="fill" className="h-4 w-4" />
+              <Sparkle weight="fill" className="h-4 w-4 animate-pulse" />
               10 Briques SaaS Pretes a l&apos;Emploi
             </motion.div>
 
@@ -336,13 +336,18 @@ export default function HomePage() {
               className="mt-16 flex items-center justify-center gap-8 sm:gap-16"
             >
               {stats.map((stat, i) => (
-                <div key={stat.label} className="text-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-foreground">
-                    <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                    {stat.label}
-                  </p>
+                <div key={stat.label} className="flex items-center gap-8 sm:gap-16">
+                  {i > 0 && (
+                    <div className="hidden sm:block h-8 w-px bg-border" />
+                  )}
+                  <div className="text-center">
+                    <p className="text-2xl sm:text-3xl font-bold text-foreground">
+                      <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                    </p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                      {stat.label}
+                    </p>
+                  </div>
                 </div>
               ))}
             </motion.div>
@@ -596,7 +601,7 @@ export default function HomePage() {
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 200 }}
-                className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/20 border border-primary/30"
+                className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/20 border border-primary/30 float"
               >
                 <Rocket weight="duotone" className="h-8 w-8 text-primary" />
               </motion.div>
