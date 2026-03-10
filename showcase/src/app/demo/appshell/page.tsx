@@ -586,7 +586,7 @@ export default function AppShellDemo() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="rounded-2xl border border-border bg-card p-6"
+          className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-6"
         >
           <h2 className="text-lg font-semibold text-foreground mb-4">
             Fonctionnalites
@@ -607,7 +607,7 @@ export default function AppShellDemo() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 + index * 0.04 }}
-                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3"
+                className="flex items-center gap-3 rounded-xl bg-muted/30 p-3 hover:bg-muted/50 transition-colors"
               >
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/10">
                   <Check weight="bold" className="h-3 w-3 text-blue-500" />
