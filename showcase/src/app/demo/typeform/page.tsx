@@ -602,10 +602,14 @@ export default function TypeformDemo() {
         e.preventDefault();
         goNext();
       }
+      if (e.key === "ArrowUp" || (e.key === "ArrowLeft" && currentQuestion?.type !== "nps")) {
+        e.preventDefault();
+        goPrev();
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [goNext]);
+  }, [goNext, goPrev, currentQuestion?.type]);
 
   const answer = currentQuestion ? answers[currentQuestion.id] : undefined;
 

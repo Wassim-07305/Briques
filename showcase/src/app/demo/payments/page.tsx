@@ -191,7 +191,7 @@ export default function PaymentsDemo() {
               animate={{ opacity: 1, scale: 1 }}
               className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-500"
             >
-              -17% de reduction
+              Economisez jusqu&apos;a {Math.max(...plans.map(getSavings))}%
             </motion.span>
           )}
         </motion.div>
