@@ -350,6 +350,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ─── Tech Stack Marquee ─── */}
+      <section className="border-t border-border bg-card/20 backdrop-blur-sm overflow-hidden py-6">
+        <div className="relative">
+          {/* Gradient fade left */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          {/* Gradient fade right */}
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <motion.div
+            animate={{ x: [0, -1200] }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            className="flex items-center gap-8 whitespace-nowrap"
+          >
+            {[
+              "Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "Supabase", "Framer Motion",
+              "Zustand", "TanStack Query", "Zod", "shadcn/ui", "Stripe", "WebRTC",
+              "Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "Supabase", "Framer Motion",
+              "Zustand", "TanStack Query", "Zod", "shadcn/ui", "Stripe", "WebRTC",
+            ].map((tech, i) => (
+              <span key={i} className="text-sm font-medium text-muted-foreground/60 tracking-wide">
+                {tech}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* ─── Features Grid ─── */}
       <section className="border-y border-border bg-card/30 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
