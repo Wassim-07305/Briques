@@ -139,9 +139,17 @@ export default function MessagingDemo() {
   const [isTyping, setIsTyping] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState<string | null>(null);
   const [showSidebar, setShowSidebar] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const messages = allMessages[activeConv.id] || [];
+  const filteredConversations = searchQuery
+    ? conversations.filter(
+        (c) =>
+          c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          c.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : conversations;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -274,6 +282,8 @@ export default function MessagingDemo() {
                   <MagnifyingGlass className="h-4 w-4 text-muted-foreground" />
                   <input
                     type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Rechercher..."
                     className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                   />
@@ -282,7 +292,7 @@ export default function MessagingDemo() {
 
               {/* Conversations List */}
               <div className="flex-1 overflow-y-auto p-2 space-y-1">
-                {conversations.map((conv, index) => (
+                {filteredConversations.map((conv, index) => (
                   <motion.button
                     key={conv.id}
                     initial={{ opacity: 0, x: -20 }}

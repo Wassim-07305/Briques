@@ -108,8 +108,21 @@ export default function OnboardingDemo() {
   const isFirstStep = currentStep === 0;
   const isLastStep = currentStep === steps.length - 1;
 
+  const canProceed = (() => {
+    switch (step.id) {
+      case "profile":
+        return formData.fullName.trim().length > 0;
+      case "role":
+        return formData.role !== "";
+      case "goals":
+        return formData.goals.length > 0;
+      default:
+        return true;
+    }
+  })();
+
   const handleNext = () => {
-    if (!isLastStep) {
+    if (!isLastStep && canProceed) {
       setDirection(1);
       setCurrentStep((prev) => prev + 1);
     }
@@ -526,11 +539,13 @@ export default function OnboardingDemo() {
 
           <button
             onClick={handleNext}
-            disabled={isLastStep}
+            disabled={isLastStep || !canProceed}
             className={cn(
               "flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-semibold transition-colors",
               isLastStep
                 ? "bg-emerald-500 text-white hover:bg-emerald-600"
+                : !canProceed
+                ? "bg-primary/50 text-primary-foreground/50 cursor-not-allowed"
                 : "bg-primary text-primary-foreground hover:bg-primary/90"
             )}
           >
