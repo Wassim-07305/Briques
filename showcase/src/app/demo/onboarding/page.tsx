@@ -233,7 +233,7 @@ export default function OnboardingDemo() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="w-full"
             >
-              <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
+              <div className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-6 md:p-8 shadow-xl shadow-fuchsia-500/5">
                 {/* Step header */}
                 <div className="mb-6 text-center">
                   <h2 className="text-xl font-semibold text-foreground">
@@ -315,24 +315,47 @@ export default function OnboardingDemo() {
 
                 {step.id === "role" && (
                   <div className="space-y-3">
-                    {roles.map((role) => {
+                    {roles.map((role, index) => {
                       const isSelected = formData.role === role.id;
                       return (
-                        <button
+                        <motion.button
                           key={role.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
                           onClick={() =>
                             setFormData({ ...formData, role: role.id })
                           }
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
                           className={cn(
                             "w-full flex items-start gap-3 rounded-xl border p-4 text-left transition-all",
                             isSelected
-                              ? "border-primary bg-primary/5 ring-1 ring-primary"
+                              ? "border-primary bg-primary/5 ring-1 ring-primary shadow-lg shadow-primary/10"
                               : "border-border bg-card hover:border-primary/30"
                           )}
                         >
                           <div
                             className={cn(
-                              "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all",
+                              "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all",
+                              isSelected
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-muted text-muted-foreground"
+                            )}
+                          >
+                            <role.icon weight="duotone" className="h-5 w-5" />
+                          </div>
+                          <div className="flex-1">
+                            <span className="font-medium text-foreground">
+                              {role.label}
+                            </span>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                              {role.description}
+                            </p>
+                          </div>
+                          <div
+                            className={cn(
+                              "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all mt-1",
                               isSelected
                                 ? "border-primary bg-primary text-primary-foreground"
                                 : "border-muted-foreground/30"
@@ -342,21 +365,7 @@ export default function OnboardingDemo() {
                               <Check weight="bold" className="h-3 w-3" />
                             )}
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <role.icon
-                                weight="duotone"
-                                className="h-4 w-4 text-muted-foreground"
-                              />
-                              <span className="font-medium text-foreground">
-                                {role.label}
-                              </span>
-                            </div>
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              {role.description}
-                            </p>
-                          </div>
-                        </button>
+                        </motion.button>
                       );
                     })}
                   </div>
@@ -364,24 +373,29 @@ export default function OnboardingDemo() {
 
                 {step.id === "goals" && (
                   <div className="grid grid-cols-2 gap-3">
-                    {goals.map((goal) => {
+                    {goals.map((goal, index) => {
                       const isSelected = formData.goals.includes(goal.id);
                       return (
-                        <button
+                        <motion.button
                           key={goal.id}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: index * 0.08 }}
                           onClick={() => toggleGoal(goal.id)}
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.97 }}
                           className={cn(
-                            "flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-all",
+                            "relative flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-all",
                             isSelected
-                              ? "border-primary bg-primary/5 ring-1 ring-primary"
+                              ? "border-primary bg-primary/5 ring-1 ring-primary shadow-lg shadow-primary/10"
                               : "border-border bg-card hover:border-primary/30"
                           )}
                         >
                           <div
                             className={cn(
-                              "flex h-10 w-10 items-center justify-center rounded-xl",
+                              "flex h-10 w-10 items-center justify-center rounded-xl transition-all",
                               isSelected
-                                ? "bg-primary text-primary-foreground"
+                                ? "bg-primary text-primary-foreground scale-110"
                                 : "bg-muted"
                             )}
                           >
@@ -395,7 +409,16 @@ export default function OnboardingDemo() {
                               {goal.description}
                             </p>
                           </div>
-                        </button>
+                          {isSelected && (
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground"
+                            >
+                              <Check weight="bold" className="h-3 w-3" />
+                            </motion.div>
+                          )}
+                        </motion.button>
                       );
                     })}
                   </div>
@@ -414,7 +437,7 @@ export default function OnboardingDemo() {
                       }}
                       className="mx-auto mb-6"
                     >
-                      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/10 mx-auto">
+                      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/10 ring-4 ring-emerald-500/20 mx-auto">
                         <Check
                           weight="bold"
                           className="h-10 w-10 text-emerald-500"
@@ -434,11 +457,46 @@ export default function OnboardingDemo() {
                         fonctionnalites.
                       </p>
                     </motion.div>
+
+                    {/* Summary of choices */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="mt-6 space-y-2 max-w-sm mx-auto text-left"
+                    >
+                      {formData.fullName && (
+                        <div className="flex items-center gap-2 rounded-lg bg-muted/30 px-3 py-2 text-sm">
+                          <User weight="duotone" className="h-4 w-4 text-primary" />
+                          <span className="text-foreground">{formData.fullName}</span>
+                          {formData.company && (
+                            <span className="text-muted-foreground">— {formData.company}</span>
+                          )}
+                        </div>
+                      )}
+                      {formData.role && (
+                        <div className="flex items-center gap-2 rounded-lg bg-muted/30 px-3 py-2 text-sm">
+                          <Briefcase weight="duotone" className="h-4 w-4 text-primary" />
+                          <span className="text-foreground">
+                            {roles.find(r => r.id === formData.role)?.label}
+                          </span>
+                        </div>
+                      )}
+                      {formData.goals.length > 0 && (
+                        <div className="flex items-center gap-2 rounded-lg bg-muted/30 px-3 py-2 text-sm">
+                          <Sparkle weight="duotone" className="h-4 w-4 text-primary" />
+                          <span className="text-foreground">
+                            {formData.goals.length} objectif{formData.goals.length > 1 ? "s" : ""} selectionne{formData.goals.length > 1 ? "s" : ""}
+                          </span>
+                        </div>
+                      )}
+                    </motion.div>
+
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: 0.5 }}
-                      className="mt-8 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-500"
+                      transition={{ delay: 0.6 }}
+                      className="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-500"
                     >
                       <Check weight="bold" className="h-4 w-4" />
                       Pret a demarrer
